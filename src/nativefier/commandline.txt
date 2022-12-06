@@ -1,0 +1,4 @@
+npm install -g nativefier
+nativefier "http://127.0.0.1:8000" --name JeFlow --disable-dev-tools --maximize true --single-instance
+
+**oluşan klasör JeFlow altına atılacak.
