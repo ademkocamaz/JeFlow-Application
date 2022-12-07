@@ -1,2 +1,10 @@
 # JeFlow-Application
-Electron App for JeFlow
+Standalone App for JeFlow
+JeFlow çalıştırılabilir versiyonu.
+Launcher çalıştırın, gerisini o halleder.
+
+## Kullanılan Dil ve Teknolojiler
+- Delphi
+- Django
+- Python
+- C++
