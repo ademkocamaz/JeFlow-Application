@@ -4,6 +4,10 @@
 #### Launcher çalıştırın, gerisini o halleder.
 
 ## Kullanılan Dil ve Teknolojiler
+- Electron
+- HTML
+- JavaScript
+- Bootstrap
 - Delphi
 - Django
 - Python
