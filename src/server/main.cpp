@@ -22,24 +22,27 @@ void extractPython() {
 }
 
 int main(int argc, char** argv) {
+	char cmd[100];
+	strcpy(cmd,"title JeFlow - Server");
+	system(cmd);
 
 	const char* jeflow = "JeFlow-win32-x64";
 	const char* python = "Python311";
 	struct stat sb;
 
 	if (stat(jeflow, &sb) == 0) {
-		printf("JeFlow-win32-x64 klasör mevcut.\n");
+		printf("JeFlow-win32-x64 exists.\n");
 	} else {
 		extractElectronApp();
 	}
 	
 	if (stat(python, &sb) == 0) {
-		printf("Python311 klasör mevcut.\n");
+		printf("Python311 exists.\n");
 	} else {
 		extractPython();
 	}
 	
-	printf("Django başlatılıyor.");
+	printf("Django is starting...\n");
 	launchDjangoServer();
 
 	return 0;

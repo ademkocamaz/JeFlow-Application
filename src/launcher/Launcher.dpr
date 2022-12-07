@@ -2,7 +2,8 @@ program Launcher;
 
 uses
   Vcl.Forms,
-  Main in 'Main.pas' {Main_Form};
+  Main in 'Main.pas' {Main_Form},
+  Utility in 'Utility.pas';
 
 {$R *.res}
 

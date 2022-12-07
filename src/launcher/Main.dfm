@@ -14,8 +14,10 @@ object Main_Form: TMain_Form
   OldCreateOrder = False
   Position = poScreenCenter
   OnActivate = FormActivate
-  OnClose = FormClose
   OnCreate = FormCreate
+  DesignSize = (
+    614
+    407)
   PixelsPerInch = 96
   TextHeight = 13
   object Image_Logo: TImage
@@ -1345,8 +1347,19 @@ object Main_Form: TMain_Form
     Top = 350
     Width = 598
     Height = 49
+    Alignment = taCenter
+    Anchors = [akLeft, akTop, akRight]
+    BorderStyle = bsNone
+    Color = clGray
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
     Lines.Strings = (
       'Memo_Status')
+    ParentFont = False
+    ReadOnly = True
     TabOrder = 0
   end
 end
