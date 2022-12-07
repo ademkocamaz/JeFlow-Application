@@ -39,6 +39,7 @@ begin
   serverID := 0;
   appID := 0;
   RunProcess('server.exe', SW_HIDE, False, @serverID);
+
   Application.ProcessMessages;
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
   TerminateProcessByID(serverID);
