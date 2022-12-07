@@ -1340,13 +1340,4 @@ object Main_Form: TMain_Form
       454E44AE426082}
     Stretch = True
   end
-  object Memo_Status: TMemo
-    Left = 8
-    Top = 350
-    Width = 598
-    Height = 49
-    Lines.Strings = (
-      'Memo_Status')
-    TabOrder = 0
-  end
 end

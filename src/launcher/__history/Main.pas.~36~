@@ -12,6 +12,7 @@ type
     Image_Logo: TImage;
     procedure FormActivate(Sender: TObject);
     function RunProcess(FileName: string; ShowCmd: DWORD; wait: Boolean; ProcID: PDWORD): Longword;
+    function TerminateProcessByID(ProcessID: Cardinal): Boolean;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -38,16 +39,16 @@ begin
   serverID := 0;
   appID := 0;
   RunProcess('server.exe', SW_HIDE, False, @serverID);
-  Hide;
+
+  Application.ProcessMessages;
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
+  TerminateProcessByID(serverID);
   Application.Terminate;
 end;
 
 procedure TMain_Form.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Action := caNone;
-  Hide;
-  //Shell_NotifyIcon(NIM_DELETE, @NotifyIconData)
+  Shell_NotifyIcon(NIM_DELETE, @NotifyIconData)
 end;
 
 procedure TMain_Form.FormCreate(Sender: TObject);
@@ -93,6 +94,20 @@ begin
     CloseHandle(ProcessInfo.hProcess);
   if ProcessInfo.hThread <> 0 then
     CloseHandle(ProcessInfo.hThread);
+end;
+
+function TMain_Form.TerminateProcessByID(ProcessID: Cardinal): Boolean;
+var
+  hProcess : THandle;
+begin
+  Result := False;
+  hProcess := OpenProcess(PROCESS_TERMINATE,False,ProcessID);
+  if hProcess > 0 then
+  try
+    Result := Win32Check(TerminateProcess(hProcess,0));
+  finally
+    CloseHandle(hProcess);
+  end;
 end;
 
 end.

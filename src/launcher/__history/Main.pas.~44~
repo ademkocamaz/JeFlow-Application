@@ -5,14 +5,17 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Winapi.ShellAPI, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Winapi.Windows;
+  Winapi.ShellAPI, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Winapi.WinInet,
+  Vcl.StdCtrls;
 
 type
   TMain_Form = class(TForm)
     Image_Logo: TImage;
+    Memo_Status: TMemo;
     procedure FormActivate(Sender: TObject);
     function RunProcess(FileName: string; ShowCmd: DWORD; wait: Boolean; ProcID: PDWORD): Longword;
     function TerminateProcessByID(ProcessID: Cardinal): Boolean;
+    function CheckUrl(Url: string): boolean;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -32,16 +35,48 @@ implementation
 
 {$R *.dfm}
 
+function TMain_Form.CheckUrl(Url: string): boolean;
+var
+  hSession, hfile, hRequest: hInternet;
+  dwindex, dwcodelen: dword;
+  dwcode: array[1..20] of char;
+  res: pchar;
+begin
+  if pos('http://', lowercase(Url)) = 0 then
+    Url := 'http://' + Url;
+  Result := false;
+  hSession := InternetOpen('InetURL:/1.0', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
+  if assigned(hSession) then
+  begin
+    hfile := InternetOpenUrl(hSession, pchar(Url), nil, 0, INTERNET_FLAG_RELOAD, 0);
+    dwindex := 0;
+    dwcodelen := 10;
+    HttpQueryInfo(hfile, HTTP_QUERY_STATUS_CODE, @dwcode, dwcodelen, dwindex);
+    res := pchar(@dwcode);
+    result := (res = '200') or (res = '302');
+    if assigned(hfile) then
+      InternetCloseHandle(hfile);
+    InternetCloseHandle(hSession);
+  end;
+
+end;
+
 procedure TMain_Form.FormActivate(Sender: TObject);
 var
   serverID, appID: Cardinal;
 begin
   serverID := 0;
   appID := 0;
+  Memo_Status.Lines.Add('Server çalýþtýrýlýyor...');
   RunProcess('server.exe', SW_HIDE, False, @serverID);
+  while not CheckUrl('127.0.0.1:8000') do
+  begin
+    Application.ProcessMessages;
+  end;
+
   Application.ProcessMessages;
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
-
+  TerminateProcessByID(serverID);
   Application.Terminate;
 end;
 
@@ -52,6 +87,7 @@ end;
 
 procedure TMain_Form.FormCreate(Sender: TObject);
 begin
+  Memo_Status.Lines.Clear;
   Image_Logo.Picture.LoadFromFile('img\logo.png');
   with NotifyIconData do
   begin
@@ -97,13 +133,13 @@ end;
 
 function TMain_Form.TerminateProcessByID(ProcessID: Cardinal): Boolean;
 var
-  hProcess : THandle;
+  hProcess: THandle;
 begin
   Result := False;
-  hProcess := OpenProcess(PROCESS_TERMINATE,False,ProcessID);
+  hProcess := OpenProcess(PROCESS_TERMINATE, False, ProcessID);
   if hProcess > 0 then
   try
-    Result := Win32Check(TerminateProcess(hProcess,0));
+    Result := Win32Check(TerminateProcess(hProcess, 0));
   finally
     CloseHandle(hProcess);
   end;
