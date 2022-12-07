@@ -68,7 +68,7 @@ begin
   serverID := 0;
   appID := 0;
   Memo_Status.Lines.Add('Server çalýþtýrýlýyor...');
-  RunProcess('server.exe', SW_HIDE, False, @serverID);
+  RunProcess('server.exe', SW_SHOW, False, @serverID);
   while not CheckUrl('127.0.0.1:8000') do
   begin
     Application.ProcessMessages;

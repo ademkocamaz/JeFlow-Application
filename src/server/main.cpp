@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	if (stat(python, &sb) == 0) {
 		printf("Python311 klasör mevcut.\n");
 	} else {
-		extractElectronApp();
+		extractPython();
 	}
 	
 	printf("Django başlatılıyor.");
