@@ -9,7 +9,6 @@ import logging
 logger=logging.getLogger('db')
 
 def login(request):
-    messages.add_message(request,messages.INFO,'Kullanıcı Adı: demo Şifre: demo ile giriş yapabilirsiniz')
     if request.method=='POST':
         username=request.POST['username']
         password=request.POST['password']
