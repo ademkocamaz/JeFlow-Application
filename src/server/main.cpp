@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sys/stat.h>
+#include <windows.h>
+
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 using namespace std;
 
@@ -27,9 +29,19 @@ void createDB(){
 	system(cmd);
 	strcpy(cmd, "Python311\\python.exe manage.py migrate");
 	system(cmd);
+	printf("superuser (jeflow) Enter Password: \n");
+	strcpy(cmd, "Python311\\python.exe manage.py createsuperuser --username jeflow --email kocamazadem@gmail.com");
+	system(cmd);
 }
 
 int main(int argc, char** argv) {
+	
+	HANDLE hMutexHandle = CreateMutex(NULL, TRUE, "JeFlow_Server");
+    if (GetLastError() == ERROR_ALREADY_EXISTS)
+    {
+        return 0;
+    }
+
 	char cmd[100];
 	strcpy(cmd,"title JeFlow - Server");
 	system(cmd);
@@ -59,6 +71,9 @@ int main(int argc, char** argv) {
 
 	printf("Django is starting...\n");
 	launchDjangoServer();
-
+	
+	ReleaseMutex(hMutexHandle);
+    CloseHandle(hMutexHandle);
+    
 	return 0;
 }

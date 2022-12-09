@@ -57,7 +57,6 @@ begin
 
   Memo_Status.Lines.Add('Kapatýlýyor...');
 
-
   hServer:= FindWindow(nil, PChar('JeFlow - Server'));
   //hServer := GetHandles(serverID);
   //ShowMessage(IntToStr(hServer));

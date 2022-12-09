@@ -2,14 +2,27 @@ program Launcher;
 
 uses
   Vcl.Forms,
+  Vcl.Dialogs,
+  Winapi.Windows,
   Main in 'Main.pas' {Main_Form},
   Utility in 'Utility.pas';
 
 {$R *.res}
 
+var
+  handle: THandle;
+
 begin
+  handle := CreateMutex(nil, True, 'JeFlow_Launcher');
+  if GetLastError = ERROR_ALREADY_EXISTS then
+    Exit;
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMain_Form, Main_Form);
   Application.Run;
+
+  ReleaseMutex(handle);
+  CloseHandle(handle);
 end.
+

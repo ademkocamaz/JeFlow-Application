@@ -1,0 +1,96 @@
+unit Main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Winapi.ShellAPI, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Winapi.WinInet,
+  Vcl.StdCtrls, System.UITypes;
+
+type
+  TMain_Form = class(TForm)
+    Image_Logo: TImage;
+    Memo_Status: TMemo;
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+const
+  WM_ICONTRAY = WM_USER + 1;
+
+var
+  Main_Form: TMain_Form;
+  NotifyIconData: TNotifyIconData;
+
+implementation
+
+uses
+  Utility;
+
+{$R *.dfm}
+
+procedure TMain_Form.FormActivate(Sender: TObject);
+var
+  serverID, appID: Cardinal;
+  hServer: THandle;
+begin
+  serverID := 0;
+  appID := 0;
+  Memo_Status.Lines.Add('Server çalýþtýrýlýyor...');
+  //hServer := ExecApplication('server.exe', '', serverID);
+  RunProcess('server.exe', SW_SHOW, False, @serverID);
+  Memo_Status.Lines.Add('server ID: ' + IntToStr(serverID));
+
+  while not CheckUrl('127.0.0.1:8000') do
+  begin
+    Application.ProcessMessages;
+  end;
+
+  Memo_Status.Lines.Add('Uygulama açýlýyor...');
+  RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
+  //Uygulama kapandýktan sonra buradaki iþlemler çalýþacak.
+
+  Memo_Status.Lines.Add('Kapatýlýyor...');
+
+
+  ShowMessage();
+  hServer:= FindWindow(nil, PChar('JeFlow - Server'));
+  //hServer := GetHandles(serverID);
+  //ShowMessage(IntToStr(hServer));
+  //CloseMessage(serverID);
+  //TerminateProcessByID(serverID);
+  //PostMessage(hServer, WM_QUIT, 0, 0);
+  PostMessage(hServer, WM_KEYDOWN, VK_CONTROL, 0);
+  PostMessage(hServer, WM_KEYDOWN, VK_PAUSE, 0);
+  PostMessage(hServer, WM_KEYUP, VK_PAUSE, 0);
+  PostMessage(hServer, WM_KEYUP, VK_CONTROL, 0);
+
+  TerminateProcessByID(serverID);
+  Shell_NotifyIcon(NIM_DELETE, @NotifyIconData);
+  Application.Terminate;
+end;
+
+procedure TMain_Form.FormCreate(Sender: TObject);
+begin
+  Memo_Status.Lines.Clear;
+  Image_Logo.Picture.LoadFromFile('img\logo.png');
+  with NotifyIconData do
+  begin
+    hIcon := Icon.Handle;
+    StrPCopy(szTip, Application.Title);
+    Wnd := Handle;
+    uCallbackMessage := WM_ICONTRAY;
+    uID := 1;
+    uFlags := NIF_MESSAGE + NIF_ICON + NIF_TIP;
+    cbSize := System.SizeOf(TNotifyIconData);
+  end;
+  Shell_NotifyIcon(NIM_ADD, @NotifyIconData);
+end;
+
+end.
+
