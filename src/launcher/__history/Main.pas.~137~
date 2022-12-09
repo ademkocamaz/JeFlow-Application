@@ -36,9 +36,8 @@ uses
 
 procedure TMain_Form.FormActivate(Sender: TObject);
 var
-  serverID, appID, notepadID: Cardinal;
-  hServer, hNotepad: THandle;
-  inputArray: array[0..3] of TInput;
+  serverID, appID: Cardinal;
+  hServer: THandle;
 begin
   serverID := 0;
   appID := 0;
@@ -55,23 +54,7 @@ begin
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
   //Uygulama kapandýktan sonra buradaki iþlemler çalýþacak.
 
-  FillChar(inputArray, length(inputArray) * sizeof(TInput), 0);
-  RunProcess('notepad.exe', SW_SHOW, False, @notepadID);
-  hNotepad := GetHandles(notepadID);
-
-  inputArray[0].Itype := INPUT_KEYBOARD;
-  inputArray[0].ki.wVk := VK_LCONTROL;
-  inputArray[1].Itype := INPUT_KEYBOARD;
-  inputArray[1].ki.wVk := VkKeyScan('S');
-  inputArray[2].Itype := INPUT_KEYBOARD;
-  inputArray[2].ki.wVk := VkKeyScan('S');
-  inputArray[2].ki.dwFlags := KEYEVENTF_KEYUP;
-  inputArray[3].Itype := INPUT_KEYBOARD;
-  inputArray[3].ki.wVk := VK_LCONTROL;
-  inputArray[3].ki.dwFlags := KEYEVENTF_KEYUP;
-
-  SendInput(length(inputArray), inputArray[0], sizeof(TInput));
-
+  Memo_Status.Lines.Add('Kapatýlýyor...');
   //hServer:= FindWindow(nil, PChar('JeFlow - Server'));
   hServer := GetHandles(serverID);
   //ShowMessage(IntToStr(hServer));
@@ -83,7 +66,7 @@ begin
   PostMessage(hServer, WM_KEYUP, VK_PAUSE, 0);
   PostMessage(hServer, WM_KEYUP, VK_CONTROL, 0);
 
-  //TerminateProcessByID(serverID);
+  TerminateProcessByID(serverID);
   Shell_NotifyIcon(NIM_DELETE, @NotifyIconData);
   Application.Terminate;
 end;

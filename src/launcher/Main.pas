@@ -45,6 +45,7 @@ begin
   //hServer := ExecApplication('server.exe', '', serverID);
   RunProcess('server.exe', SW_SHOW, False, @serverID);
   Memo_Status.Lines.Add('server ID: ' + IntToStr(serverID));
+
   while not CheckUrl('127.0.0.1:8000') do
   begin
     Application.ProcessMessages;
@@ -55,8 +56,10 @@ begin
   //Uygulama kapandýktan sonra buradaki iþlemler çalýþacak.
 
   Memo_Status.Lines.Add('Kapatýlýyor...');
-  //hServer:= FindWindow(nil, PChar('JeFlow - Server'));
-  hServer := GetHandles(serverID);
+
+
+  hServer:= FindWindow(nil, PChar('JeFlow - Server'));
+  //hServer := GetHandles(serverID);
   //ShowMessage(IntToStr(hServer));
   //CloseMessage(serverID);
   //TerminateProcessByID(serverID);
