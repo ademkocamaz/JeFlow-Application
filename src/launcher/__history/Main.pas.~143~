@@ -36,9 +36,8 @@ uses
 
 procedure TMain_Form.FormActivate(Sender: TObject);
 var
-  serverID, appID, notepadID: Cardinal;
-  hServer, hNotepad: THandle;
-  inputArray: array[0..3] of TInput;
+  serverID, appID: Cardinal;
+  hServer: HWND;
 begin
   serverID := 0;
   appID := 0;
@@ -46,6 +45,7 @@ begin
   //hServer := ExecApplication('server.exe', '', serverID);
   RunProcess('server.exe', SW_SHOW, False, @serverID);
   Memo_Status.Lines.Add('server ID: ' + IntToStr(serverID));
+
   while not CheckUrl('127.0.0.1:8000') do
   begin
     Application.ProcessMessages;
@@ -53,15 +53,13 @@ begin
 
   Memo_Status.Lines.Add('Uygulama açýlýyor...');
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
+
   //Uygulama kapandýktan sonra buradaki iþlemler çalýþacak.
 
-  FillChar(inputArray, length(inputArray) * sizeof(TInput), 0);
-  RunProcess('notepad.exe', SW_SHOW, False, @notepadID);
-  hNotepad := GetHandles(notepadID);
-  SendKey(hNotepad, VkKeyScan('S'),True, False, False);
+  Memo_Status.Lines.Add('Kapatýlýyor...');
 
-  //hServer:= FindWindow(nil, PChar('JeFlow - Server'));
-  hServer := GetHandles(serverID);
+  hServer:= FindWindow(nil, 'JeFlow - Server');
+  //hServer := GetHandles(serverID);
   //ShowMessage(IntToStr(hServer));
   //CloseMessage(serverID);
   //TerminateProcessByID(serverID);

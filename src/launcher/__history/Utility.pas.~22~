@@ -8,6 +8,8 @@ uses
 
 function RunProcess(FileName: string; ShowCmd: DWORD; wait: Boolean; ProcID: PDWORD): Longword;
 
+function TerminateProcessByID(ProcessID: Cardinal): Boolean;
+
 function CheckUrl(Url: string): boolean;
 
 procedure SendKey(Wnd, VK: Cardinal; Ctrl, Alt, Shift: Boolean);
@@ -46,7 +48,7 @@ end;
 
 function CheckUrl(Url: string): boolean;
 var
-  hSession, hfile: hInternet;
+  hSession, hfile, hRequest: hInternet;
   dwindex, dwcodelen: dword;
   dwcode: array[1..20] of char;
   res: pchar;

@@ -37,7 +37,7 @@ uses
 procedure TMain_Form.FormActivate(Sender: TObject);
 var
   serverID, appID: Cardinal;
-  hServer: THandle;
+  hServer: HWND;
 begin
   serverID := 0;
   appID := 0;
@@ -53,22 +53,25 @@ begin
 
   Memo_Status.Lines.Add('Uygulama açýlýyor...');
   RunProcess('JeFlow-win32-x64\JeFlow.exe', SW_SHOW, True, @appID);
+
   //Uygulama kapandýktan sonra buradaki iþlemler çalýþacak.
 
   Memo_Status.Lines.Add('Kapatýlýyor...');
 
-  hServer:= FindWindow(nil, PChar('JeFlow - Server'));
+  hServer:= FindWindow(nil, 'JeFlow - Server');
+
+  SendKey(hServer, vkC, True, False, False);
   //hServer := GetHandles(serverID);
   //ShowMessage(IntToStr(hServer));
   //CloseMessage(serverID);
   //TerminateProcessByID(serverID);
   //PostMessage(hServer, WM_QUIT, 0, 0);
-  PostMessage(hServer, WM_KEYDOWN, VK_CONTROL, 0);
-  PostMessage(hServer, WM_KEYDOWN, VK_PAUSE, 0);
-  PostMessage(hServer, WM_KEYUP, VK_PAUSE, 0);
-  PostMessage(hServer, WM_KEYUP, VK_CONTROL, 0);
+//  PostMessage(hServer, WM_KEYDOWN, VK_CONTROL, 0);
+//  PostMessage(hServer, WM_KEYDOWN, VK_PAUSE, 0);
+//  PostMessage(hServer, WM_KEYUP, VK_PAUSE, 0);
+//  PostMessage(hServer, WM_KEYUP, VK_CONTROL, 0);
 
-  TerminateProcessByID(serverID);
+  //TerminateProcessByID(serverID);
   Shell_NotifyIcon(NIM_DELETE, @NotifyIconData);
   Application.Terminate;
 end;

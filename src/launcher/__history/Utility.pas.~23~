@@ -46,7 +46,7 @@ end;
 
 function CheckUrl(Url: string): boolean;
 var
-  hSession, hfile: hInternet;
+  hSession, hfile, hRequest: hInternet;
   dwindex, dwcodelen: dword;
   dwcode: array[1..20] of char;
   res: pchar;
