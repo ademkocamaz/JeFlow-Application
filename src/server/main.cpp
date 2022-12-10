@@ -25,10 +25,16 @@ void extractPython() {
 
 void createDB(){
 	char cmd[100];
+	
 	strcpy(cmd, "Python311\\python.exe manage.py makemigrations");
 	system(cmd);
+	
 	strcpy(cmd, "Python311\\python.exe manage.py migrate");
 	system(cmd);
+	
+	strcpy(cmd, "Python311\\python.exe manage.py loaddata State");
+	system(cmd);
+	
 	printf("superuser (jeflow) Enter Password: \n");
 	strcpy(cmd, "Python311\\python.exe manage.py createsuperuser --username jeflow --email kocamazadem@gmail.com");
 	system(cmd);
