@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2022.12.10 13:29:25.033,=C:\Users\Adem\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022.12.10 13:29:52.592,C:\Users\Adem\Desktop\ProcessTest\Unit1.dfm=C:\Users\Adem\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2022.12.10 13:29:52.592,C:\Users\Adem\Desktop\ProcessTest\Unit1.pas=C:\Users\Adem\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2022.12.10 13:29:55.554,C:\Users\Adem\Desktop\ProcessTest\Project1.dproj=C:\Users\Adem\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2022.12.10 13:31:20.154,=C:\Users\Adem\Desktop\ProcessTest\Utility.pas</Transaction>
+    <Transaction>2022.12.10 15:09:09.984,=C:\Users\Adem\Desktop\ProcessTest\Unit2.pas</Transaction>
+    <Transaction>2022.12.10 15:10:45.276,C:\Users\Adem\Desktop\ProcessTest\sndkey32.pas=C:\Users\Adem\Desktop\ProcessTest\Unit2.pas</Transaction>
+    <Transaction>2022.12.10 15:15:50.471,C:\Users\Adem\Desktop\ProcessTest\sndkey32.pas=</Transaction>
+  </Transactions>
+</BorlandProject>
